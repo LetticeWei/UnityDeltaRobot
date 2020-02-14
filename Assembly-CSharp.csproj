@@ -53,7 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ArmDemo.cs" />
+     <Compile Include="Assets\ArmDemo2.cs" />
+     <Compile Include="Assets\CGA.cs" />
      <Compile Include="Assets\Rotate.cs" />
+     <Compile Include="Assets\ShapeClasses.cs" />
      <Compile Include="Assets\SpringSinu.cs" />
      <Compile Include="Assets\SpringSinu2.cs" />
      <Compile Include="Assets\SpringSinu3.cs" />

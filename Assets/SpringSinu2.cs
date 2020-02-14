@@ -10,13 +10,13 @@ public class SpringSinu2 : MonoBehaviour
 
     public float countdown=5f;
     public int round=0;
-    void Start()
+     void Start()
     {
         hinge = GetComponent<HingeJoint>();
         hingeSpring = hinge.spring;
-        hingeSpring.spring = 50;
-        hingeSpring.damper = 30;
-        hingeSpring.targetPosition =25f;
+        hingeSpring.spring = 5000;
+        hingeSpring.damper = 4000;
+        hingeSpring.targetPosition =36.87023f;
         hinge.spring = hingeSpring;
         hinge.useSpring = true;
     }
@@ -24,13 +24,13 @@ public class SpringSinu2 : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {   
-        countdown-=Time.deltaTime;
-        if(countdown<=0.0f){
-            hingeSpring.targetPosition = -1f*hingeSpring.targetPosition;
-            JointSpring spr = hinge.spring;
-            spr.targetPosition =hinge.spring.targetPosition*-1f;
-            hinge.spring = spr;
-            countdown=10.0f;
-        }
+        GameObject go = GameObject.Find ("CGA Model Manager");
+        ArmDemo2 ArmFrame = go.GetComponent <ArmDemo2> ();
+        float Angle_B = ArmFrame.Angle_B;
+        
+        JointSpring spr = hinge.spring;
+        spr.targetPosition = -Angle_B+36.87023f;
+        hinge.spring = spr;
+        
     }
 }
