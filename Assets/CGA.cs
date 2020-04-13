@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 // 3D Projective Geometric Algebra
 // Written by a generator written by enki.
 using System;
@@ -7,6 +7,7 @@ using static CGA.CGA; // static variable acces
 using UnityEngine;
 namespace CGA
 {
+	// [System.Serializable]
 	public class CGA
 	{
 		// just for debug and print output, the basis names
@@ -645,11 +646,24 @@ namespace CGA
 		
 		
 		// CGA is point based. Vectors are points. 
+		public static CGA one =new CGA(1f, 0);
 		public static CGA e1 = new CGA(1f, 1);
 		public static CGA e2 = new CGA(1f, 2);
 		public static CGA e3 = new CGA(1f, 3);
 		public static CGA e4 = new CGA(1f, 4);
 		public static CGA e5 = new CGA(1f, 5);
+		public static CGA e12 = new CGA(1f, 6);
+		public static CGA e13 = new CGA(1f, 7);
+		public static CGA e14 = new CGA(1f, 8);
+		public static CGA e15 = new CGA(1f, 9);
+		public static CGA e23 = new CGA(1f, 10);
+		public static CGA e24 = new CGA(1f, 11);
+		public static CGA e25 = new CGA(1f, 12);
+		public static CGA e34 = new CGA(1f, 13);
+		public static CGA e35 = new CGA(1f, 14);
+		public static CGA e45 = new CGA(1f, 15);
+
+
 		
 		
 		// We seldomly work in the natural basis, but instead in a null basis
@@ -659,7 +673,13 @@ namespace CGA
 		
 		public static CGA I5 = e1^e2^e3^e4^e5;
 		public static CGA I3 = e1^e2^e3;
-
+		
+		public static CGA get_grade_1(CGA pnt){
+			return pnt[1]*e1+pnt[2]*e2+pnt[3]*e3+pnt[4]*e4+pnt[5]*e5;
+		}
+		public static CGA get_grade_2(CGA pnt){
+			return pnt[6]*e12+pnt[7]*e13+pnt[8]*e14+pnt[9]*e15+pnt[10]*e23+pnt[11]*e24+pnt[12]*e25+pnt[13]*e34+pnt[14]*e35+pnt[15]*e45;
+		}
 		// up and down functions
 		public static CGA normalise_pnt_minus_one(CGA pnt){
         return (pnt*(-1.0f/(pnt|ei)[0]));
@@ -671,6 +691,8 @@ namespace CGA
 		}
 
 		public static CGA down(CGA pnt){
+			//normalise_pnt_minus_one(CGA pnt){
+        	// return (pnt*(-1.0f/(pnt|ei)[0]));
         CGA normed_p = normalise_pnt_minus_one(pnt);
         return normed_p[1]*e1 + normed_p[2]*e2 + normed_p[3]*e3;
     	}
@@ -841,15 +863,21 @@ namespace CGA
 
 
 	
-		public static CGA ExtractPntBfromPntPairs(CGA T)
+		public static CGA ExtractPntBfromPntPairs(CGA T, bool normaliseY=true)
 		{	CGA one =new CGA(1f, 0);
 			var beta=(float) Mathf.Sqrt((T*T)[0]);
 			var F=(1.0f/beta)*T;
 			var P=0.5f*(one+F);
 			var P_d=0.5f*(one-F);
 			var PntB=P*(T|ei);
-			return normalise_pnt_minus_one(PntB);
+			if (normaliseY){
+				return normalise_pnt_minus_one(PntB);
+			}
+			else{
+				return PntB;
+			}
 		}
+
 
 		// Preparations on defining game objects: plane, circle, sphere
 		public static float GetPlaneDist(CGA Plane5D){

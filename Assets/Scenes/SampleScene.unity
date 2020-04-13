@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 368039198}
   - component: {fileID: 368039197}
   - component: {fileID: 368039202}
+  - component: {fileID: 368039204}
+  - component: {fileID: 368039203}
   m_Layer: 0
   m_Name: CGA Model Manager
   m_TagString: Untagged
@@ -234,14 +236,101 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368039196}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e1b67ca9a2152b489b5e8c10331e98b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scale_factor: 0
   Angle_A: 0
   Angle_B: 0
   Angle_C: 0
+--- !u!114 &368039203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368039196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48911f3ea7b2ff24c8cdc7062fac3e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: 0
+  l: 0
+  rou: 0
+  re: 0
+  theta0: 0
+  theta1: 0
+  theta2: 0
+  theta0_: 0
+  theta1_: 0
+  theta2_: 0
+  x0: {x: 0, y: 0, z: 0}
+  x1: {x: 0, y: 0, z: 0}
+  x2: {x: 0, y: 0, z: 0}
+  y: {x: 0, y: 0, z: 0}
+  a0: {x: 0, y: 0, z: 0}
+  a1: {x: 0, y: 0, z: 0}
+  a2: {x: 0, y: 0, z: 0}
+  s0: {x: 0, y: 0, z: 0}
+  s1: {x: 0, y: 0, z: 0}
+  s2: {x: 0, y: 0, z: 0}
+  dx0_dt: {x: 0, y: 0, z: 0}
+  dx1_dt: {x: 0, y: 0, z: 0}
+  dx2_dt: {x: 0, y: 0, z: 0}
+  dy_dt: {x: 0, y: 0, z: 0}
+  dtheta0_dalphax: 0
+  dtheta0_dalphay: 0
+  dtheta0_dalphaz: 0
+  dtheta1_dalphax: 0
+  dtheta1_dalphay: 0
+  dtheta1_dalphaz: 0
+  dtheta2_dalphax: 0
+  dtheta2_dalphay: 0
+  dtheta2_dalphaz: 0
+  dtheta0_dt: 0
+  dtheta1_dt: 0
+  dtheta2_dt: 0
+  timer: 0
+--- !u!114 &368039204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368039196}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c50d3aa659542498b193376ec110c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: 0
+  l: 0
+  rou: 0
+  re: 0
+  theta0: 0
+  theta1: 0
+  theta2: 0
+  s0: {x: 0, y: 0, z: 0}
+  s1: {x: 0, y: 0, z: 0}
+  s2: {x: 0, y: 0, z: 0}
+  a0: {x: 0, y: 0, z: 0}
+  a1: {x: 0, y: 0, z: 0}
+  a2: {x: 0, y: 0, z: 0}
+  elb0: {x: 0, y: 0, z: 0}
+  elb1: {x: 0, y: 0, z: 0}
+  elb2: {x: 0, y: 0, z: 0}
+  y: {x: 0, y: 0, z: 0}
+  dy_dtheta0: {x: 0, y: 0, z: 0}
+  dy_dtheta1: {x: 0, y: 0, z: 0}
+  dy_dtheta2: {x: 0, y: 0, z: 0}
+  dtheta0_dt: 0
+  dtheta1_dt: 0
+  dtheta2_dt: 0
+  dy_dt: {x: 0, y: 0, z: 0}
+  timer: 0
 --- !u!108 &705507994 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
@@ -444,30 +533,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
-        type: 3}
-      propertyPath: m_BoundingSphereOverride.x
-      value: 7.64e-43
-      objectReference: {fileID: 0}
-    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
-        type: 3}
-      propertyPath: m_BoundingSphereOverride.y
-      value: -5.23646e-10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
-        type: 3}
-      propertyPath: m_BoundingSphereOverride.z
-      value: 7.64e-43
-      objectReference: {fileID: 0}
-    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
-        type: 3}
-      propertyPath: m_BoundingSphereOverride.w
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2290321222530027283, guid: 69e7e5a8a188a8244be2579ab74f50b0,
         type: 3}
       propertyPath: m_Name
       value: DeltaRobot1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 2290321222530027282, guid: 69e7e5a8a188a8244be2579ab74f50b0,
         type: 3}

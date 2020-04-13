@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CGA;
@@ -8,10 +8,11 @@ using static ShapeClasses;
 public class ArmDemo2 : MonoBehaviour
 {
     // Start is called before the first frame update
+    public float scale_factor;
+
     public float Angle_A;
     public float Angle_B;
     public float Angle_C;
-
 
     public static Point Wrist;
 
@@ -45,8 +46,13 @@ public class ArmDemo2 : MonoBehaviour
 
     void Start()
     {
+    scale_factor=0.3f;
+    //update the scale of the robot model (seems unsuccessful)
+    // GameObject rob = GameObject.Find ("DeltaRobot1");
+    // rob.transform.localScale=new Vector3(1f,1f,1f)*scale_factor;
+
     Wrist=new Point();
-    Wrist.Point3D=new Vector3(5f/3f*(float) Math.Sqrt(3f),-24,5f);
+    Wrist.Point3D=new Vector3(5f/3f*(float) Math.Sqrt(3f),-24,5f)*scale_factor;
     Wrist.SetupGameObject(0.1f,0.7f,0.3f); //set the colour
 
     //Three fixed pivots at ground
@@ -55,11 +61,11 @@ public class ArmDemo2 : MonoBehaviour
     Pivot.SetupGameObject(0.1f,0.3f,0.7f); //set the colour
 
     PivotB=new Point();
-    PivotB.Point3D=new Vector3(0,0,10f);
+    PivotB.Point3D=new Vector3(0,0,10f)*scale_factor;
     PivotB.SetupGameObject(0.1f,0.3f,0.7f); 
 
     PivotC=new Point();
-    PivotC.Point3D=new Vector3(5f* (float) Math.Sqrt(3f) ,0,5f);
+    PivotC.Point3D=new Vector3(5f* (float) Math.Sqrt(3f) ,0,5f)*scale_factor;
     PivotC.SetupGameObject(0.1f,0.3f,0.7f); 
 
     ElbowJointA=new Point();
@@ -88,61 +94,61 @@ public class ArmDemo2 : MonoBehaviour
     //create a circle class object with pivit position as centre, and arm length as radius
     PivotReachA1= new Circle(); //will be fixed all the time, should be supressed
     PivotReachA1.PlaneVisible=false;
-    Vector3 AtoA1=new Vector3(-1f*(10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f);
-    PivotReachA1.PointA=Pivot.Point3D+ new Vector3(0,10f,0)+AtoA1;
-    PivotReachA1.PointB=Pivot.Point3D+ new Vector3(0,-10f,0)+AtoA1;
-    PivotReachA1.PointC=Pivot.Point3D+ new Vector3(5f,0,5f* (float) Math.Sqrt(3f))+AtoA1;
+    Vector3 AtoA1=new Vector3(-1f*(10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f)*scale_factor;
+    PivotReachA1.PointA=Pivot.Point3D+ new Vector3(0,10f,0)*scale_factor+AtoA1;
+    PivotReachA1.PointB=Pivot.Point3D+ new Vector3(0,-10f,0)*scale_factor+AtoA1;
+    PivotReachA1.PointC=Pivot.Point3D+ new Vector3(5f,0,5f* (float) Math.Sqrt(3f))*scale_factor+AtoA1;
     PivotReachA1.initialiseCircle();
 
     PivotReachA2= new Circle(); //will be fixed all the time, should be supressed
     PivotReachA2.PlaneVisible=false;
     //Vector3 AtoA2=new Vector3(-(10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f);
-    PivotReachA2.PointA=Pivot.Point3D+ new Vector3(0,10f,0)-AtoA1;
-    PivotReachA2.PointB=Pivot.Point3D+ new Vector3(0,-10f,0)-AtoA1;
-    PivotReachA2.PointC=Pivot.Point3D+ new Vector3(5f,0,5f* (float) Math.Sqrt(3f))-AtoA1;
+    PivotReachA2.PointA=Pivot.Point3D+ new Vector3(0,10f,0)*scale_factor-AtoA1;
+    PivotReachA2.PointB=Pivot.Point3D+ new Vector3(0,-10f,0)*scale_factor-AtoA1;
+    PivotReachA2.PointC=Pivot.Point3D+ new Vector3(5f,0,5f* (float) Math.Sqrt(3f))*scale_factor-AtoA1;
     PivotReachA2.initialiseCircle();
 
     PivotReachB1= new Circle(); //will be fixed all the time, should be 
     PivotReachB1.PlaneVisible=false;
-    Vector3 BtoB1=new Vector3((10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f);
-    PivotReachB1.PointA=PivotB.Point3D+ new Vector3(0,10f,0)+BtoB1;
-    PivotReachB1.PointB=PivotB.Point3D+ new Vector3(0,-10f,0)+BtoB1;
-    PivotReachB1.PointC=PivotB.Point3D+ new Vector3(5f,0,-5f* (float) Math.Sqrt(3f))+BtoB1;
+    Vector3 BtoB1=new Vector3((10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f)*scale_factor;
+    PivotReachB1.PointA=PivotB.Point3D+ new Vector3(0,10f,0)*scale_factor+BtoB1;
+    PivotReachB1.PointB=PivotB.Point3D+ new Vector3(0,-10f,0)*scale_factor+BtoB1;
+    PivotReachB1.PointC=PivotB.Point3D+ new Vector3(5f,0,-5f* (float) Math.Sqrt(3f))*scale_factor+BtoB1;
     PivotReachB1.initialiseCircle();
 
     PivotReachB2= new Circle(); //will be fixed all the time, should be 
     PivotReachB2.PlaneVisible=false;
-    Vector3 BtoB2=new Vector3((10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f);
-    PivotReachB2.PointA=PivotB.Point3D+ new Vector3(0,10f,0)-BtoB1;
-    PivotReachB2.PointB=PivotB.Point3D+ new Vector3(0,-10f,0)-BtoB1;
-    PivotReachB2.PointC=PivotB.Point3D+ new Vector3(5f,0,-5f* (float) Math.Sqrt(3f))-BtoB1;
+    Vector3 BtoB2=new Vector3((10*(float) Math.Sqrt(3f)-3)/8f,0f,(10-(float) Math.Sqrt(3f))/8f)*scale_factor;
+    PivotReachB2.PointA=PivotB.Point3D+ new Vector3(0,10f,0)*scale_factor-BtoB1;
+    PivotReachB2.PointB=PivotB.Point3D+ new Vector3(0,-10f,0)*scale_factor-BtoB1;
+    PivotReachB2.PointC=PivotB.Point3D+ new Vector3(5f,0,-5f* (float) Math.Sqrt(3f))*scale_factor-BtoB1;
     PivotReachB2.initialiseCircle();
 
     PivotReachC1= new Circle(); //will be fixed all the time, should be 
     PivotReachC1.PlaneVisible=false;
-    Vector3 CtoC2=new Vector3(0,0,-1f*(10-(float) Math.Sqrt(3f))/4f);
-    PivotReachC1.PointA=PivotC.Point3D+ new Vector3(0,10f,0)+CtoC2;
-    PivotReachC1.PointB=PivotC.Point3D+ new Vector3(0,-10f,0)+CtoC2;
-    PivotReachC1.PointC=PivotC.Point3D+ new Vector3(-10F,0,0)+CtoC2;
+    Vector3 CtoC2=new Vector3(0,0,-1f*(10-(float) Math.Sqrt(3f))/4f)*scale_factor;
+    PivotReachC1.PointA=PivotC.Point3D+ new Vector3(0,10f,0)*scale_factor+CtoC2;
+    PivotReachC1.PointB=PivotC.Point3D+ new Vector3(0,-10f,0)*scale_factor+CtoC2;
+    PivotReachC1.PointC=PivotC.Point3D+ new Vector3(-10F,0,0)*scale_factor+CtoC2;
     PivotReachC1.initialiseCircle();
 
     PivotReachC2= new Circle(); //will be fixed all the time, should be 
     PivotReachC2.PlaneVisible=false;
-    PivotReachC2.PointA=PivotC.Point3D+ new Vector3(0,10f,0)-CtoC2;
-    PivotReachC2.PointB=PivotC.Point3D+ new Vector3(0,-10f,0)-CtoC2;
-    PivotReachC2.PointC=PivotC.Point3D+ new Vector3(-10F,0,0)-CtoC2;
+    PivotReachC2.PointA=PivotC.Point3D+ new Vector3(0,10f,0)*scale_factor-CtoC2;
+    PivotReachC2.PointB=PivotC.Point3D+ new Vector3(0,-10f,0)*scale_factor-CtoC2;
+    PivotReachC2.PointC=PivotC.Point3D+ new Vector3(-10F,0,0)*scale_factor-CtoC2;
     PivotReachC2.initialiseCircle();
 
     PlatformVertexD=new Point();
-    PlatformVertexD.Point3D=Wrist.Point3D+ new Vector3((3f-10*(float) Math.Sqrt(3f))/6f,0,0);
+    PlatformVertexD.Point3D=Wrist.Point3D+ new Vector3((3f-10*(float) Math.Sqrt(3f))/6f,0,0)*scale_factor;
     PlatformVertexD.SetupGameObject(1f,0.2f,0.1f); //set the colour
 
     PlatformVertexE=new Point();
-    PlatformVertexE.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,(10f-(float) Math.Sqrt(3f))/4f);
+    PlatformVertexE.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,(10f-(float) Math.Sqrt(3f))/4f)*scale_factor;
     PlatformVertexE.SetupGameObject(1f,0.2f,0.1f); //set the colour
 
     PlatformVertexF=new Point();
-    PlatformVertexF.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,-1f*(10f-(float) Math.Sqrt(3f))/4f);
+    PlatformVertexF.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,-1f*(10f-(float) Math.Sqrt(3f))/4f)*scale_factor;
     PlatformVertexF.SetupGameObject(1f,0.2f,0.1f); //set the colour
 
 
@@ -150,19 +156,19 @@ public class ArmDemo2 : MonoBehaviour
     LowerArmReachD=new Sphere();
     LowerArmReachD.SphereObj.active = false;
     LowerArmReachD.Centre=PlatformVertexD.Point3D;
-    LowerArmReachD.Radius= 21.96040974f; //position of wrist relative to elbow joint
+    LowerArmReachD.Radius= 21.96040974f*scale_factor; //position of wrist relative to elbow joint
     LowerArmReachD.FindSphere5DbyCandRou();
 
     LowerArmReachE=new Sphere();
     LowerArmReachE.SphereObj.active = false;
     LowerArmReachE.Centre=PlatformVertexE.Point3D;
-    LowerArmReachE.Radius= 21.96040974f; //position of wrist relative to elbow joint
+    LowerArmReachE.Radius= 21.96040974f*scale_factor; //position of wrist relative to elbow joint
     LowerArmReachE.FindSphere5DbyCandRou();
 
     LowerArmReachF=new Sphere();
     LowerArmReachF.SphereObj.active = false;
     LowerArmReachF.Centre=PlatformVertexF.Point3D;
-    LowerArmReachF.Radius= 21.96040974f; //position of wrist relative to elbow joint
+    LowerArmReachF.Radius= 21.96040974f*scale_factor; //position of wrist relative to elbow joint
     LowerArmReachF.FindSphere5DbyCandRou();
 
     IntersectPointDA1_1=new Point();
@@ -214,9 +220,9 @@ public class ArmDemo2 : MonoBehaviour
     //take the position of the wrist as the centre of a Sphere class object
     Wrist.UpdatePoint3DfromObject();
 
-    PlatformVertexD.Point3D=Wrist.Point3D+ new Vector3((3f-10*(float) Math.Sqrt(3f))/6f,0,0);
-    PlatformVertexE.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,(10f-(float) Math.Sqrt(3f))/4f);
-    PlatformVertexF.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,-1f*(10f-(float) Math.Sqrt(3f))/4f);
+    PlatformVertexD.Point3D=Wrist.Point3D+ new Vector3((3f-10*(float) Math.Sqrt(3f))/6f,0,0)*scale_factor;
+    PlatformVertexE.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,(10f-(float) Math.Sqrt(3f))/4f)*scale_factor;
+    PlatformVertexF.Point3D=Wrist.Point3D+ new Vector3((-3f+10*(float) Math.Sqrt(3f))/12f,0,-1f*(10f-(float) Math.Sqrt(3f))/4f)*scale_factor;
     PlatformVertexD.UpdateGameObject();
     PlatformVertexE.UpdateGameObject();
     PlatformVertexF.UpdateGameObject();
@@ -240,7 +246,9 @@ public class ArmDemo2 : MonoBehaviour
         IntersectPointDA1_2.UpdateGameObject();
         ElbowJointA1.GameObj.transform.position=IntersectPointDA1_2.GameObj.transform.position;
         }
-
+    else{
+        Debug.Log("Cannot reach.");
+    }
     CSIntersectionDB2=Intersection5D(PivotReachB2.Circle5D,LowerArmReachD.Sphere5D);
     if (pnt_to_scalar_pnt(CSIntersectionDB2*CSIntersectionDB2)>0){
         IntersectPointDB2_1.Shape5D=ExtractPntAfromPntPairs(CSIntersectionDB2);
@@ -252,7 +260,9 @@ public class ArmDemo2 : MonoBehaviour
         IntersectPointDB2_2.UpdateGameObject();
         ElbowJointB2.GameObj.transform.position=IntersectPointDB2_2.GameObj.transform.position;
         }
-
+    else{
+        Debug.Log("Cannot reach.");
+    }
     CSIntersectionEB1=Intersection5D(PivotReachB1.Circle5D,LowerArmReachE.Sphere5D);
     if (pnt_to_scalar_pnt(CSIntersectionEB1*CSIntersectionEB1)>0){
         IntersectPointEB1_1.Shape5D=ExtractPntAfromPntPairs(CSIntersectionEB1);
@@ -264,6 +274,9 @@ public class ArmDemo2 : MonoBehaviour
         IntersectPointEB1_2.UpdateGameObject();
         ElbowJointB1.GameObj.transform.position=IntersectPointEB1_2.GameObj.transform.position;
         }
+    else{
+        Debug.Log("Cannot reach.");
+    }
     CSIntersectionEC2=Intersection5D(PivotReachC2.Circle5D,LowerArmReachE.Sphere5D);
     if (pnt_to_scalar_pnt(CSIntersectionEC2*CSIntersectionEC2)>0){
         IntersectPointEC2_1.Shape5D=ExtractPntAfromPntPairs(CSIntersectionEC2);
@@ -275,6 +288,9 @@ public class ArmDemo2 : MonoBehaviour
         IntersectPointEC2_2.UpdateGameObject();
         ElbowJointC2.GameObj.transform.position=IntersectPointEC2_2.GameObj.transform.position;
         }
+    else{
+        Debug.Log("Cannot reach.");
+    }
     CSIntersectionFC1=Intersection5D(PivotReachC1.Circle5D,LowerArmReachF.Sphere5D);
     if (pnt_to_scalar_pnt(CSIntersectionFC1*CSIntersectionFC1)>0){
         IntersectPointFC1_1.Shape5D=ExtractPntAfromPntPairs(CSIntersectionFC1);
@@ -286,6 +302,9 @@ public class ArmDemo2 : MonoBehaviour
         IntersectPointFC1_2.UpdateGameObject();
         ElbowJointC1.GameObj.transform.position=IntersectPointFC1_2.GameObj.transform.position;
         }
+    else{
+        Debug.Log("Cannot reach.");
+    }
     CSIntersectionFA2=Intersection5D(PivotReachA2.Circle5D,LowerArmReachF.Sphere5D);
     if (pnt_to_scalar_pnt(CSIntersectionFA2*CSIntersectionFA2)>0){
         IntersectPointFA2_1.Shape5D=ExtractPntAfromPntPairs(CSIntersectionFA2);
@@ -297,22 +316,24 @@ public class ArmDemo2 : MonoBehaviour
         IntersectPointFA2_2.UpdateGameObject();
         ElbowJointA2.GameObj.transform.position=IntersectPointFA2_2.GameObj.transform.position;
         }
+    else{
+        Debug.Log("<color=red>Error: Cannot reach");
+    }
 
     ElbowJointA.GameObj.transform.position=(ElbowJointA1.GameObj.transform.position+ElbowJointA2.GameObj.transform.position)/2;
     ElbowJointB.GameObj.transform.position=(ElbowJointB1.GameObj.transform.position+ElbowJointB2.GameObj.transform.position)/2;
     ElbowJointC.GameObj.transform.position=(ElbowJointC1.GameObj.transform.position+ElbowJointC2.GameObj.transform.position)/2;
-
 
     Vector3 planeNormal=new Vector3(0,1f,0);
     
 
     //Find the angle for the two Vectors
     Angle_A = Vector3.Angle(Vector3.ProjectOnPlane(ElbowJointA.GameObj.transform.position-Pivot.Point3D, planeNormal), ElbowJointA.GameObj.transform.position-Pivot.Point3D);
-    Debug.Log(Angle_A);
+    //Debug.Log(Angle_A);
     Angle_B = Vector3.Angle(Vector3.ProjectOnPlane(ElbowJointB.GameObj.transform.position-PivotB.Point3D, planeNormal), ElbowJointB.GameObj.transform.position-PivotB.Point3D);
-    Debug.Log(Angle_B);
+    //Debug.Log(Angle_B);
     Angle_C = Vector3.Angle(Vector3.ProjectOnPlane(ElbowJointC.GameObj.transform.position-PivotC.Point3D, planeNormal),ElbowJointC.GameObj.transform.position-PivotC.Point3D);
-    Debug.Log(Angle_C);
+    //Debug.Log(Angle_C);
 
 
     } 
