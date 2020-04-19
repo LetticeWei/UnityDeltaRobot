@@ -56,6 +56,7 @@
      <Compile Include="Assets\ArmDemo.cs" />
      <Compile Include="Assets\ArmDemo2.cs" />
      <Compile Include="Assets\CGA.cs" />
+     <Compile Include="Assets\DeltaRobotClass.cs" />
      <Compile Include="Assets\PathAndSpeedRegulator.cs" />
      <Compile Include="Assets\PathRegulator2.cs" />
      <Compile Include="Assets\RobotConfigurator.cs" />

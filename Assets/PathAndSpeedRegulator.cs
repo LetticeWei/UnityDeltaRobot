@@ -144,9 +144,9 @@ public class PathAndSpeedRegulator : MonoBehaviour
         pivot2=new Point();pivot2.Point3D=s2;pivot2.SetupGameObject(0.1f,0.3f,0.7f);
 
 
-        theta0= (Mathf.PI)/4f;
+        theta0= (Mathf.PI)/3f;
         theta1= (Mathf.PI)/4f;
-        theta2= (Mathf.PI)/4f;
+        theta2= (Mathf.PI)/5f;
 
         //ai are centres of the spheres
         a0=findEndPoint_ai(theta0,s0);
@@ -196,7 +196,7 @@ public class PathAndSpeedRegulator : MonoBehaviour
 
         // check ExtractPntAfromPntPairs!!!!
         CGA.CGA unnormedY = ExtractPntBfromPntPairs(T, false);
-        dy_dtheta0=pnt_to_vector(find_dy_dthetai(dY_dtheta0, unnormedY));
+        dy_dtheta0=-1f*pnt_to_vector(find_dy_dthetai(dY_dtheta0, unnormedY));
         dy_dtheta1=pnt_to_vector(find_dy_dthetai(dY_dtheta1, unnormedY));
         dy_dtheta2=pnt_to_vector(find_dy_dthetai(dY_dtheta2, unnormedY));
 
@@ -231,6 +231,7 @@ public class PathAndSpeedRegulator : MonoBehaviour
         theta0+=dtheta0_dt;
         theta1+=dtheta1_dt;
         theta2+=dtheta2_dt;
+        
 
         //ai are centres of the spheres
         a0=findEndPoint_ai(theta0,s0);
@@ -301,8 +302,8 @@ public class PathAndSpeedRegulator : MonoBehaviour
         var dy_dt_cal=new Vector3(dy_dt_1,dy_dt_2,dy_dt_3);
         point_y.Point3D+=dy_dt_cal;
 
-        Debug.Log("dy_dt_error");
-        Debug.Log(dy_dt_cal-dy_dt_real);
+        // Debug.Log("dy_dt_error");
+        // Debug.Log(dy_dt_cal-dy_dt_real);
         
         point_y.UpdateGameObject();
         point_y_another.UpdateGameObject();

@@ -42,8 +42,6 @@ public class PathRegulator2 : MonoBehaviour{
         CGA.CGA part3=-1f*P_d*(T|ei)*dP_dthetai;
         return get_grade_1(part1+part2+part3);
     }
-
-
     public CGA.CGA find_dai_dalpha(CGA.CGA dAi_dt, CGA.CGA Ai){
         float denom = (Ai|ei)[0]*(Ai|ei)[0];
         CGA.CGA left=one-one;  //zero vector
@@ -69,7 +67,6 @@ public class PathRegulator2 : MonoBehaviour{
         var nume=(zi|si_cga)[0]*(dzi_dt|(-1f*e2))[0]-(zi|(-1f*e2))[0]*(dzi_dt|si_cga)[0];
         return nume/denom;
     }
-
     public CGA.CGA find_dP_dthetai(CGA.CGA T,CGA.CGA dT_dthetai){
         float beta = Mathf.Sqrt((T|T)[0]);
         CGA.CGA dbeta_dthetai = (dT_dthetai|T)*(1f/beta);
@@ -77,7 +74,6 @@ public class PathRegulator2 : MonoBehaviour{
         dP_dthetai = 0.5f*(beta*dT_dthetai - T*dbeta_dthetai)*(1f/(beta*beta));
         return dP_dthetai;
     }
-
     public Vector3 findEndPoint_ai(float thetai,Vector3 si){
         var si_cga=vector_to_pnt(si);
         CGA.CGA ai=(rb-re+l*Mathf.Cos(thetai))*si_cga+l*Mathf.Sin(thetai)*(-1f*e2);
@@ -100,10 +96,10 @@ public class PathRegulator2 : MonoBehaviour{
         CGA.CGA Ci = temp_Sphere_dual^(I3*((-1f*e2)^si_cga));
         return Ci;
     }
+
     void Start()
     {   //set this platform velocity
         dy_dt=new Vector3(1f,0,0);
-
         rb=4f;l=5f;rou=9f;re=1f;
         y=new Vector3(0,-12f,0);
         s0=new Vector3(1,0,0);
@@ -245,6 +241,7 @@ public class PathRegulator2 : MonoBehaviour{
         //update the framework according to dy_dt
         dy_dt=new Vector3((float) Mathf.Cos(timer)*0.05f,(float) Mathf.Cos(timer*0.6f)*(-0.1f),(float) Mathf.Cos(timer*1.2f)*0.05f);
         // dy_dt=new Vector3(0,0,(float) Mathf.Cos(timer)*0.05f);
+        // dy_dt=new Vector3(0,0,0);
         y+=dy_dt;
 
         x0=y+re*s0;

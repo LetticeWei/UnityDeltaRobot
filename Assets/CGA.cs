@@ -689,6 +689,10 @@ namespace CGA
 		  float d = x*x + y*y + z*z;
 		  return x*e1 + y*e2 + z*e3 + 0.5f*d*ei - eo;
 		}
+		public static CGA up_v(Vector3 vec){
+			float d = vec.x*vec.x + vec.y*vec.y + vec.z*vec.z;
+			return vec.x*e1 + vec.y*e2 + vec.z*e3 + 0.5f*d*ei - eo;;
+		}
 
 		public static CGA down(CGA pnt){
 			//normalise_pnt_minus_one(CGA pnt){
@@ -875,6 +879,26 @@ namespace CGA
 			}
 			else{
 				return PntB;
+			}
+		}
+
+		public static CGA ExtractPntfromPntPairs(CGA T, bool normaliseY=true, bool IsPntB=true)
+		{	CGA one =new CGA(1f, 0);
+			var beta=(float) Mathf.Sqrt((T*T)[0]);
+			var F=(1.0f/beta)*T;
+			var P=0.5f*(one+F);
+			var P_d=0.5f*(one-F);
+			var PntA=-1f*P_d*(T|ei);
+			var PntB=P*(T|ei);
+			if (normaliseY){
+				if (IsPntB){
+					return normalise_pnt_minus_one(PntB);}
+				else{return normalise_pnt_minus_one(PntA);}
+			}
+			else{
+				if (IsPntB){
+					return PntB;}
+				else{return PntA;}
 			}
 		}
 

@@ -252,7 +252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368039196}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48911f3ea7b2ff24c8cdc7062fac3e61, type: 3}
   m_Name: 
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368039196}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44c50d3aa659542498b193376ec110c5, type: 3}
   m_Name: 
@@ -433,6 +433,7 @@ GameObject:
   - component: {fileID: 1067361116}
   - component: {fileID: 1067361115}
   - component: {fileID: 1067361119}
+  - component: {fileID: 1067361120}
   m_Layer: 0
   m_Name: CGA Library
   m_TagString: Untagged
@@ -526,6 +527,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d232cc3e95cc5b47bfca6bd0c4a9ce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1067361120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067361114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dead939ff3756478c16d6f0556b2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1277569476 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2290321222530027283, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1486035191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1277569478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277569476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c212fc8c74ac174cbf76f78caf9939f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  use_spring: 1
+  use_motor: 0
+  use_limit: 0
+  springConst: 0
+  damperConst: 0
+  unified_motor_force: 0
+  limit_min: 0
+  limit_max: 0
+  limit_bounciness: 0
+  limit_bounceMinVelocity: 0
+  HingeMoterVelocityA: 0
+  HingeMoterVelocityB: 0
+  HingeMoterVelocityC: 0
+  use_gravity: 0
+  upper_arm_mass: 0
+  elbow_mass: 0
+  lower_arm_mass: 0
+  platform_mass: 0
+  drag: 0
+  angular_drag: 0
 --- !u!1001 &1486035191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -533,11 +584,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2290321222530027283, guid: 69e7e5a8a188a8244be2579ab74f50b0,
-        type: 3}
-      propertyPath: m_Name
-      value: DeltaRobot1 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2290321222068601963, guid: 69e7e5a8a188a8244be2579ab74f50b0,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
@@ -557,6 +603,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 1e-45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222530027283, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_Name
+      value: DeltaRobot1 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2290321222530027282, guid: 69e7e5a8a188a8244be2579ab74f50b0,
         type: 3}
