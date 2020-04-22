@@ -301,7 +301,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368039196}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44c50d3aa659542498b193376ec110c5, type: 3}
   m_Name: 
@@ -539,6 +539,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7dead939ff3756478c16d6f0556b2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  time: 0
+  dtheta_dt_l: []
+  theta_l: []
 --- !u!1 &1277569476 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2290321222530027283, guid: 69e7e5a8a188a8244be2579ab74f50b0,
@@ -922,6 +925,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222530027282, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222530027282, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290321222530027282, guid: 69e7e5a8a188a8244be2579ab74f50b0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2290321221011297088, guid: 69e7e5a8a188a8244be2579ab74f50b0,
         type: 3}
