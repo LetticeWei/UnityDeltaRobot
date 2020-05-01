@@ -46,7 +46,7 @@ public class ArmDemo2 : MonoBehaviour
 
     void Start()
     {
-    scale_factor=0.3f;
+    scale_factor=0.7f;
     //update the scale of the robot model (seems unsuccessful)
     // GameObject rob = GameObject.Find ("DeltaRobot1");
     // rob.transform.localScale=new Vector3(1f,1f,1f)*scale_factor;

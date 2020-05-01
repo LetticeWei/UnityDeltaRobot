@@ -16,7 +16,6 @@ public class DeltaRobot{
     public float[,] inv_jaco;
     public Vector3[] frwd_jaco;
     public Point[] Base_l, Elbow_l, Platform_l;
-
     public Vector3[] s_l;
     public DeltaRobot(float base_radius, float upper_arm_length, float lower_arm_length, float end_radius){
         
@@ -33,11 +32,11 @@ public class DeltaRobot{
 
         for (int i =0; i<3;i++){
             this.Base_l[i]=new Point();
-            this.Base_l[i].Point3D=this.s_l[i];
+            this.Base_l[i].Point3D=this.s_l[i]*this.rb;
             this.Base_l[i].SetupGameObject(0.1f,0.7f,0.9f); //set the colour
 
             this.Elbow_l[i]=new Point();
-            this.Elbow_l[i].Point3D=(this.rb+this.l*Mathf.Cos(Mathf.PI/4))*s_l[i]+ pnt_to_vector(Mathf.Sin(Mathf.PI/4)*(-1f*e2)); //set a default theta = pi/4
+            this.Elbow_l[i].Point3D=(this.rb+this.l*Mathf.Cos(Mathf.PI/4))*s_l[i]+ pnt_to_vector(l*Mathf.Sin(Mathf.PI/4)*(-1f*e2)); //set a default theta = pi/4
             this.Elbow_l[i].SetupGameObject(0.7f,0.9f,0.1f); //set the colour
 
             this.Platform_l[i]=new Point();
@@ -52,7 +51,7 @@ public class DeltaRobot{
             // Debug.Log(Elbow_l[i]);
             this.Platform_l[i].Point3D=this.end_point+this.s_l[i]*this.re;
             this.Platform_l[i].UpdateGameObject();
-            this.Elbow_l[i].Point3D=(this.rb+this.l*Mathf.Cos(this.theta_l[i]))*this.s_l[i]+ pnt_to_vector(Mathf.Sin(this.theta_l[i])*(-1f*e2));
+            this.Elbow_l[i].Point3D=(this.rb+this.l*Mathf.Cos(this.theta_l[i]))*this.s_l[i]+ pnt_to_vector(l*Mathf.Sin(this.theta_l[i])*(-1f*e2));
             this.Elbow_l[i].UpdateGameObject();
 
             }
@@ -149,12 +148,12 @@ public class DeltaRobot{
         CGA.CGA[] si_l_cga={vector_to_pnt(this.s0),
             vector_to_pnt(this.s1),
             vector_to_pnt(this.s2)};
-
         float rb=this.rb; float re=this.re; float rou=this.rou; float l = this.l;
         float[] joint_angle_l=this.theta_l;
-
+        
         CGA.CGA[] elbow_l=new CGA.CGA[3];CGA.CGA[] S_l=new CGA.CGA[3];
         CGA.CGA[] a_l=new CGA.CGA[3];CGA.CGA[] A_l=new CGA.CGA[3];
+
         for(int i=0;i<3;i++){
             elbow_l[i]=(rb+l*Mathf.Cos(theta_l[i]))*si_l_cga[i]+l*Mathf.Sin(joint_angle_l[i])*(-1f*e2);
             a_l[i]=elbow_l[i]-re*si_l_cga[i];A_l[i]=up_v(pnt_to_vector(a_l[i])); 
@@ -340,14 +339,16 @@ public class DeltaRobotClass : MonoBehaviour
     public DeltaRobot Robot1;
     public float time;
     public float[] dtheta_dt_l,theta_l;
+    public float scale_fact;
     // public float dtheta_dt0,dtheta_dt1;
 
     // Start is called before the first frame update
 
     void Start()
-    {
-        Robot1=new DeltaRobot(4.773502f,10f,21.96040974f,3.58013f);
-        Robot1.assign_end_point_pisition(new Vector3(0,-24f,0));
+    {   
+        scale_fact=0.5f;
+        Robot1=new DeltaRobot(scale_fact*4.773502f,scale_fact*10f,scale_fact*21.96040974f,scale_fact*3.58013f);
+        Robot1.assign_end_point_pisition(scale_fact*new Vector3(0,-24f,0));
         time=0f;
         //inv_jaco= Robot1.differential_inverse_kinematics(end_point);
         Robot1.dtheta_dt_l=new float[]{0,0,0};
@@ -361,12 +362,13 @@ public class DeltaRobotClass : MonoBehaviour
     {
         // Vector3 dy_dt_to_assign=new Vector3((float) Mathf.Cos(time)*0.3f,(float) Mathf.Cos(time*0.6f)*(-0.25f),(float) Mathf.Cos(time*1.2f)*0.35f);
         // Vector3 dy_dt_to_assign=new Vector3(0,0,(float) Mathf.Cos(time*0.6f)*(-0.45f));
-        Vector3 dy_dt_to_assign=new Vector3(0,(float) -1f*Mathf.Cos(time*0.6f)*(-0.25f),(float) Mathf.Sin(time*0.6f)*(-0.25f));
+        Vector3 dy_dt_to_assign=scale_fact*new Vector3(0,(float) -1f*Mathf.Cos(time*0.6f)*(-0.25f),(float) Mathf.Sin(time*0.6f)*(-0.25f));
 
         Robot1.assign_end_point_velocity(dy_dt_to_assign);
         // Debug.Log(Robot1.end_point);
         // Debug.Log(Robot1.dy_dt);
         Robot1.assign_end_point_pisition(Robot1.end_point+dy_dt_to_assign);
+        
         theta_l=Robot1.inverse_kinematics();
         dtheta_dt_l=Robot1.inverse_kinematics_velocity();
         // dtheta_dt0=dtheta_dt_l[0];dtheta_dt1=dtheta_dt_l[1];

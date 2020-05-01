@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class RobotConfigurator : MonoBehaviour
 {   
-    private GameObject sceneParent, UpperArms,UpperArms_A,UpperArms_B,UpperArms_C,ElbowJoints,ElbowJointA,ElbowJointB,ElbowJointC;
+    private GameObject UpperArms,UpperArms_A,UpperArms_B,UpperArms_C,ElbowJoints,ElbowJointA,ElbowJointB,ElbowJointC;
+    private GameObject Platforms, Platform_D,Platform_E,Platform_F,Bases, Base_A,Base_C,Base_B;
+
     public IList<Rigidbody> UpperArmRBList,ElbowJointList,LowerArmList,PlatformRBList;
     public IList<HingeJoint> UpperArmHingeJointList;
     public bool use_spring, use_motor, use_limit;
@@ -43,17 +45,28 @@ public class RobotConfigurator : MonoBehaviour
     {   
         //initialise the parameters
         
-        upper_arm_mass=1f;elbow_mass=0.01f;lower_arm_mass=0.01f;platform_mass=0.02f; drag=0.1f;angular_drag=0.01f;
-        unified_motor_force=30000f; HingeMoterVelocityA=5; HingeMoterVelocityB=-5;HingeMoterVelocityC=3;
+        upper_arm_mass=1f;elbow_mass=0.01f;lower_arm_mass=0.01f;platform_mass=0.01f; drag=0f;angular_drag=0f;
+        unified_motor_force=300f; HingeMoterVelocityA=5; HingeMoterVelocityB=-5;HingeMoterVelocityC=3;
         limit_min=-30f; limit_max=30f; limit_bounciness=10f;limit_bounceMinVelocity=1f;
         use_spring=false;use_motor=true;use_limit= false;
         //UPPER ARMS 
-        sceneParent = GameObject.Find("DeltaRobot1");
-        UpperArms = GameObject.Find("UpperArms");
+        UpperArms=transform.GetChild(1).gameObject;
 
         UpperArms_A = UpperArms.transform.GetChild(0).gameObject;
         UpperArms_B = UpperArms.transform.GetChild(1).gameObject;
         UpperArms_C = UpperArms.transform.GetChild(2).gameObject;
+
+        //Platforms
+        Platforms=transform.GetChild(5).gameObject;
+
+        Platform_D=Platforms.transform.GetChild(0).gameObject;
+        Platform_F=Platforms.transform.GetChild(1).gameObject;
+        Platform_E=Platforms.transform.GetChild(2).gameObject;
+
+        Bases=transform.GetChild(0).gameObject;
+        Base_A=Bases.transform.GetChild(0).gameObject;
+        Base_C=Bases.transform.GetChild(1).gameObject;
+        Base_B=Bases.transform.GetChild(2).gameObject;
 
         UpperArmRigbodyA=UpperArms_A.GetComponent<Rigidbody>();
         UpperArmRigbodyB=UpperArms_B.GetComponent<Rigidbody>();
@@ -113,14 +126,30 @@ public class RobotConfigurator : MonoBehaviour
         Rigidbody PlatformRigBodF=PlatformF.GetComponent<Rigidbody>();
 
         PlatformRBList= new List<Rigidbody>() {PlatformRigBodD,PlatformRigBodE,PlatformRigBodF};
+
+        //initialise last_error
+        last_error=new Vector3(0,0,0);
+        accum_error=new Vector3(0,0,0);
     }
 
+    
+    public Vector3 currentposition, end_point_error,last_error, accum_error;
     // Update is called once per frame
     void FixedUpdate()
-    {   
+{       GameObject CGA_Library_capsule = GameObject.Find ("CGA Library");
+        DeltaRobotClass DeltaRobotFile = CGA_Library_capsule.GetComponent <DeltaRobotClass> ();
+        DeltaRobot theRobot= DeltaRobotFile.Robot1;
+        
+        
+        currentposition=  (1f/3f) * (Platform_D.transform.position+ Platform_F.transform.position+ Platform_E.transform.position
+                                    - Base_A.transform.position- Base_B.transform.position- Base_C.transform.position);
+        end_point_error= theRobot.end_point-currentposition;
+
+
+
         if (use_spring==true && use_motor==false){
-            GameObject go = GameObject.Find ("CGA Model Manager");
-            ArmDemo2 ArmFrame = go.GetComponent <ArmDemo2> ();
+            GameObject CGA_Model_Manager = GameObject.Find ("CGA Model Manager");
+            ArmDemo2 ArmFrame = CGA_Model_Manager.GetComponent <ArmDemo2> ();
             float Angle_A = ArmFrame.Angle_A;
             JointSpring sprA = hingeA.spring;
             sprA.targetPosition = -Angle_A+36.87f;
@@ -147,21 +176,25 @@ public class RobotConfigurator : MonoBehaviour
             hingeC.useSpring = use_spring;
         }
         else if (use_spring==false && use_motor==true){
-            GameObject go = GameObject.Find ("CGA Library");
-            DeltaRobotClass DeltaRobotFile = go.GetComponent <DeltaRobotClass> ();
-            DeltaRobot theRobot= DeltaRobotFile.Robot1;
+
             float[] dtheta_dt_l = theRobot.dtheta_dt_l;
-            // Debug.Log("dtheta_dt_l");
-            // Debug.Log(dtheta_dt_l);
-            float scale_fac=2000f;
+            // float[] dtheta_dt_l=new float[]{0,0,0};
+            float k_p0=700f;
+            float k_p=70f; 
+            float k_d= 0f, k_i= 0f;
+            Vector3 derivative_error=end_point_error-last_error;
+            accum_error+=end_point_error;
 
-            // Debug.Log("dtheta_dt_l[0]");
-            // Debug.Log(theRobot.dtheta_dt_l[0]);
+            Vector3 input_velocity= k_p*end_point_error + k_d*derivative_error+ k_i * accum_error;
+            // Vector3 input_velocity= k_p*end_point_error;
 
-            HingeMoterVelocityA = scale_fac*dtheta_dt_l[0];
-            // Debug.Log("HingeMoterVelocityA");
-            // Debug.Log(HingeMoterVelocityA);
-            // ConfigHingeJoint_usingMotor(hingeA, HingeMoterVelocityA, unified_motor_force);
+            float [,] inv_jacob=theRobot.differential_inverse_kinematics();
+
+            // for(int i=0;i<3;i++){
+            //     dtheta_dt_l[i]=inv_jacob[i,0]*input_velocity.x+inv_jacob[i,1]*input_velocity.y+inv_jacob[i,2]*input_velocity.z;
+            // }
+
+            HingeMoterVelocityA =k_p0* dtheta_dt_l[0];
             hingeA.useSpring = false;
             hingeA.useMotor = true;
             JointMotor temp_motor = hingeA.motor;
@@ -170,7 +203,7 @@ public class RobotConfigurator : MonoBehaviour
             temp_motor.freeSpin = true;
             hingeA.motor = temp_motor;
 
-            HingeMoterVelocityB = scale_fac*dtheta_dt_l[1];
+            HingeMoterVelocityB = k_p0*dtheta_dt_l[1];
             // ConfigHingeJoint_usingMotor(hingeB, HingeMoterVelocityB, unified_motor_force);
             hingeB.useSpring = false;
             hingeB.useMotor = true;
@@ -180,7 +213,7 @@ public class RobotConfigurator : MonoBehaviour
             temp_motor.freeSpin = true;
             hingeB.motor = temp_motor;
 
-            HingeMoterVelocityC = scale_fac*dtheta_dt_l[2];
+            HingeMoterVelocityC = k_p0*dtheta_dt_l[2];
             // ConfigHingeJoint_usingMotor(hingeC, HingeMoterVelocityC, unified_motor_force); 
             hingeC.useSpring = false;
             hingeC.useMotor = true;
@@ -198,6 +231,7 @@ public class RobotConfigurator : MonoBehaviour
         updateRigidBodyParam(ElbowJointList,elbow_mass,drag,angular_drag,use_gravity);
         updateRigidBodyParam(LowerArmList,lower_arm_mass,drag,angular_drag,use_gravity);
         updateRigidBodyParam(PlatformRBList,platform_mass,drag,angular_drag,use_gravity);
+        last_error=end_point_error;
     }
     public void ConfigHingeJoint_limit(HingeJoint hinge ,float min, float max, float bounciness, float bounceMinVelocity ){
         JointLimits limits = hinge.limits;
