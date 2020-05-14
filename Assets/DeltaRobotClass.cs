@@ -17,6 +17,7 @@ public class DeltaRobot{
     public Vector3[] frwd_jaco;
     public Point[] Base_l, Elbow_l, Platform_l;
     public Vector3[] s_l;
+    public Vector3 ModelOffset;
     public DeltaRobot(float base_radius, float upper_arm_length, float lower_arm_length, float end_radius){
         
         this.rb=base_radius;
@@ -43,6 +44,9 @@ public class DeltaRobot{
             this.Platform_l[i].Point3D=new Vector3(0,-1f*this.l,0); //set a default endpoint position
             this.Platform_l[i].SetupGameObject(0.9f,0.1f,0.7f); //set the colour
         }
+
+        
+
     }
     
     public void update_framework(){
@@ -93,21 +97,22 @@ public class DeltaRobot{
         var z=a-rb*si_cga;
         return z;
     }
-    public CGA.CGA find_dA_dalpha(CGA.CGA T,CGA.CGA P,CGA.CGA P_d,CGA.CGA dP_dthetai,CGA.CGA dT_dthetai, bool is_dY_dtheta=false){
+    public CGA.CGA find_dE_prime_dalpha(CGA.CGA T,CGA.CGA P,CGA.CGA P_d,CGA.CGA dP_dthetai,CGA.CGA dT_dthetai, bool is_dY_dtheta=false){
         var dP_d_dthetai=~dP_dthetai;
         CGA.CGA part1= -1f*dP_d_dthetai*(T|ei)*P;
         CGA.CGA part2=-1f*P_d*(dT_dthetai|ei)*P;
         CGA.CGA part3=-1f*P_d*(T|ei)*dP_dthetai;
         return get_grade_1(part1+part2+part3);
     }
-    public CGA.CGA find_da_dalpha(CGA.CGA dAi_dt, CGA.CGA Ai, bool isY=false){
+
+    public CGA.CGA find_de_prime_dalpha(CGA.CGA dAi_dt, CGA.CGA Ai, bool isY=false){
         float denom = (Ai|ei)[0]*(Ai|ei)[0];
         CGA.CGA left=one-one;  //zero vector
         CGA.CGA right=one-one;  //zero vector
-        CGA.CGA[] basis_array= {e1, e2, e3};
-        foreach (CGA.CGA b in basis_array){
-          left +=-1f*(dAi_dt|b)*b*(Ai|ei); 
-          right+= (Ai|b)*b*(dAi_dt|ei);}
+        CGA.CGA[] basis_array={e1, e2, e3}; 
+        foreach (CGA.CGA b in basis_array){ 
+            left+=-1f*(dAi_dt|b)*b*(Ai|ei); 
+            right+=(Ai|b)*b*(dAi_dt|ei);} 
         return (left+right)*(1f/denom);
     }
 
@@ -117,6 +122,7 @@ public class DeltaRobot{
         var nume=(zi|si_cga)[0]*(dz_dt|(-1f*e2))[0]-(zi|(-1f*e2))[0]*(dz_dt|si_cga)[0];
         return nume/denom;
     }
+
     public CGA.CGA find_dSigmai_dthetai(float thetai,Vector3 si){
         var si_cga=vector_to_pnt(si);
         var dai_dthetai=-1f*l*Mathf.Sin(thetai)*si_cga + l*Mathf.Cos(thetai)*(-1f*e2);
@@ -129,6 +135,7 @@ public class DeltaRobot{
         var dT_dtheta= !(dSigma_dtheta^C); 
         return dT_dtheta;
     }
+
     public CGA.CGA find_dP_dtheta(CGA.CGA T,CGA.CGA dT_dthetai){
         float beta = Mathf.Sqrt((T|T)[0]);
         CGA.CGA dbeta_dthetai = (dT_dthetai|T)*(1f/beta);
@@ -190,8 +197,6 @@ public class DeltaRobot{
             elbow_l[i]=up_v(pnt_to_vector(elbow_l[i]));
             CGA.CGA Centre5D=up_v(pnt_to_vector(a_l[i]));
             S_l[i]= !(Centre5D+(-0.5f)*rou*rou*ei);
-
-
         }
         CGA.CGA T=get_grade_2(!(!S_l[0]^!S_l[1]^!S_l[2]));
         var result = find_P(T);
@@ -214,8 +219,8 @@ public class DeltaRobot{
             C_l[i] =(!S_l[other_indices[0]])^(!S_l[other_indices[1]]);
             CGA.CGA dT_dtheta= find_dT_dtheta(dSigma_dtheta,C_l[i]);
             CGA.CGA dP_dtheta= find_dP_dtheta(T,dT_dtheta);
-            CGA.CGA dY_dtheta=find_dA_dalpha(~T,~P,~P_d,~dP_dtheta,-1f*dT_dtheta,true);
-            Vector3 dy_dtheta=-1f*pnt_to_vector(find_da_dalpha(dY_dtheta, unnormedY,true));
+            CGA.CGA dY_dtheta=find_dE_prime_dalpha(~T,~P,~P_d,~dP_dtheta,-1f*dT_dtheta,true);
+            Vector3 dy_dtheta=-1f*pnt_to_vector(find_de_prime_dalpha(dY_dtheta, unnormedY,true));
             if (i==1){dy_dtheta=-1f*dy_dtheta;}
             jacobian[i]=dy_dtheta;
             if (to_display){Debug.Log(jacobian[i]);}
@@ -290,10 +295,10 @@ public class DeltaRobot{
                 var result = find_P(T);
                 var P=result.Item1;var P_d=result.Item2;
                 CGA.CGA dP_dalpha=find_dP_dthetai(T,dT_dalpha);
-                CGA.CGA dA_dalpha=find_dA_dalpha(~T,~P,~P_d,~dP_dalpha,-1f*dT_dalpha);
+                CGA.CGA dA_dalpha=find_dE_prime_dalpha(~T,~P,~P_d,~dP_dalpha,-1f*dT_dalpha);
                 // Diff through the down
                 CGA.CGA unnormedA= ExtractPntfromPntPairs(T,false,true);
-                CGA.CGA da_dalpha=-1f*find_da_dalpha(dA_dalpha, unnormedA);
+                CGA.CGA da_dalpha=-1f*find_de_prime_dalpha(dA_dalpha, unnormedA);
                 if (k==1){da_dalpha= -1f*da_dalpha;}
                 // Get the theta derivative
                 CGA.CGA A= ExtractPntfromPntPairs(T,true,true);

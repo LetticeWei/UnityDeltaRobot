@@ -56,15 +56,18 @@
      <Compile Include="Assets\ArmDemo.cs" />
      <Compile Include="Assets\ArmDemo2.cs" />
      <Compile Include="Assets\CGA.cs" />
+     <Compile Include="Assets\CreateDeltaRobotPrefab.cs" />
      <Compile Include="Assets\DeltaRobotClass.cs" />
      <Compile Include="Assets\PathAndSpeedRegulator.cs" />
      <Compile Include="Assets\PathRegulator2.cs" />
+     <Compile Include="Assets\ProcedualMesh.cs" />
      <Compile Include="Assets\RobotConfigurator.cs" />
      <Compile Include="Assets\Rotate.cs" />
      <Compile Include="Assets\ShapeClasses.cs" />
      <Compile Include="Assets\SpringSinu.cs" />
      <Compile Include="Assets\SpringSinu2.cs" />
      <Compile Include="Assets\SpringSinu3.cs" />
+     <Compile Include="Assets\YValue.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/UnityProjects/RobotTry1/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
