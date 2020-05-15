@@ -34,13 +34,21 @@ public class DeltaRobotModel{
     public void CreateBase(){
         float t= this.bar_thickness;
         GameObject[] base_bars= new GameObject[3];
+        GameObject[] base_bar_links= new GameObject[3];
         for (int i = 0; i < 3; i++){
             base_bars[i]=GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            base_bar_links[i]=GameObject.CreatePrimitive(PrimitiveType.Capsule);
             base_bars[i].transform.Rotate(0f, 120f*(float)i, 0f, Space.Self);
             base_bars[i].transform.Rotate(90f, 0f, 0f, Space.Self);
-            base_bars[i].transform.localScale=new Vector3(t,this.rb*Mathf.Sqrt(3f),t);
+            base_bar_links[i].transform.Rotate(0f, 60f+120f*(float)i, 0f, Space.Self);
+            base_bar_links[i].transform.Rotate(90f, 0f, 0f, Space.Self);
+            base_bars[i].transform.localScale=new Vector3(t,0.35f*this.rb*Mathf.Sqrt(3f),t);
             base_bars[i].transform.position= this.rb*s_l[i];
+            base_bar_links[i].transform.localScale=new Vector3(t,0.35f*this.rb*Mathf.Sqrt(3f),t);
+            base_bar_links[i].transform.position= this.rb*(s_l[i]+s_l[(i+1)%3]);
         }
+
+    
     }
     public void CreatePlatform(){
         // float temp_y= -10.63186143f;
@@ -53,7 +61,7 @@ public class DeltaRobotModel{
             platform_bars[i].transform.Rotate(0f, 60f + 120f*(float)i, 0f, Space.Self);
             platform_bars[i].transform.position= this.re*(s_l[i % 3 ]+s_l[(i+1) % 3]) + new Vector3(0,temp_y,0);
             platform_bars[i].transform.Rotate(0, 0f, 90f, Space.Self);
-            platform_bars[i].transform.localScale=new Vector3(t,this.re,t) ;
+            platform_bars[i].transform.localScale=new Vector3(t,0.5f*t+this.re,t) ;
 
             platform_balls[i]=GameObject.CreatePrimitive(PrimitiveType.Sphere);
             platform_balls[i].transform.localScale*=t*2f;
