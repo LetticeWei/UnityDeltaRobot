@@ -666,7 +666,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067361114}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7dead939ff3756478c16d6f0556b2be, type: 3}
   m_Name: 
@@ -1026,6 +1026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scale_fact: 0
+  assigned_offset: {x: 0, y: 0, z: 0}
   upper_arm_5_unit_prefab: {fileID: -927199367670048503, guid: 3fb4e3cc8c4eb924994c2b7e0630f512,
     type: 3}
   lower_arm_9_unit_prefab: {fileID: -927199367670048503, guid: 242bf74a0a7402649ae1b7f39569e723,

@@ -352,7 +352,8 @@ public class DeltaRobotClass : MonoBehaviour
     void Start()
     {   
         scale_fact=0.5f;
-        Robot1=new DeltaRobot(scale_fact*4.773502f,scale_fact*10f,scale_fact*21.96040974f,scale_fact*3.58013f);
+        // Robot1=new DeltaRobot(scale_fact*4.773502f,scale_fact*10f,scale_fact*21.96040974f,scale_fact*3.58013f);
+        Robot1=new DeltaRobot(2f,5f,9f,1f);
         Robot1.assign_end_point_pisition(scale_fact*new Vector3(0,-24f,0));
         time=0f;
         //inv_jaco= Robot1.differential_inverse_kinematics(end_point);

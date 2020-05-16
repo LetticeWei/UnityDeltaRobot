@@ -62,6 +62,7 @@
      <Compile Include="Assets\PathRegulator2.cs" />
      <Compile Include="Assets\ProcedualMesh.cs" />
      <Compile Include="Assets\RobotConfigurator.cs" />
+     <Compile Include="Assets\RobotCongifurator2.cs" />
      <Compile Include="Assets\Rotate.cs" />
      <Compile Include="Assets\ShapeClasses.cs" />
      <Compile Include="Assets\SpringSinu.cs" />
